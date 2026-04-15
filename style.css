@@ -1,0 +1,75 @@
+/* Estilo geral da página */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Título */
+h1 {
+    color: #333;
+}
+
+/* Campo de input */
+input {
+    padding: 10px;
+    width: 200px;
+    margin: 10px;
+}
+
+/* Seletor */
+select {
+    padding: 10px;
+    margin: 10px;
+}
+
+/* Botão */
+button {
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* Efeito ao passar o mouse */
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Lista */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* Cada tarefa */
+li {
+    padding: 10px;
+    margin: 10px auto;
+    width: 300px;
+    border-radius: 5px;
+    color: white;
+}
+
+/* Prioridade Alta */
+.alta {
+    background-color: red;
+}
+
+/* Prioridade Média */
+.media {
+    background-color: orange;
+}
+
+/* Prioridade Baixa */
+.baixa {
+    background-color: green;
+}
+
+/* Tarefa concluída */
+.concluida {
+    text-decoration: line-through;
+    opacity: 0.6;
+}

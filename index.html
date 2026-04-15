@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List Acadêmica</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        main {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: none;
+        }
+
+        li {
+            list-style: none;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Cores por prioridade */
+        .alta { background-color: #ffcccc; }
+        .media { background-color: #fff3cd; }
+        .baixa { background-color: #d4edda; }
+
+        .concluida {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .info {
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<main>
+    <h1>Minha Lista de Tarefas</h1>
+
+    <section>
+        <input type="text" id="tarefa-texto" placeholder="Digite a tarefa">
+        
+        <select id="prioridade-select">
+            <option value="alta">Alta</option>
+            <option value="media">Média</option>
+            <option value="baixa">Baixa</option>
+        </select>
+
+        <button id="btn-adicionar">Adicionar</button>
+    </section>
+
+    <ul id="lista-tarefas"></ul>
+</main>
+
+<script>
+    const input = document.getElementById("tarefa-texto");
+    const select = document.getElementById("prioridade-select");
+    const botao = document.getElementById("btn-adicionar");
+    const lista = document.getElementById("lista-tarefas");
+
+    let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+
+    function salvarLocalStorage() {
+        localStorage.setItem("tarefas", JSON.stringify(tarefas));
+    }
+
+    function criarDataHora() {
+        const agora = new Date();
+        return agora.toLocaleString();
+    }
+
+    function renderizarTarefas() {
+        lista.innerHTML = "";
+
+        tarefas.forEach((tarefa, index) => {
+            const li = document.createElement("li");
+
+            li.classList.add(tarefa.prioridade);
+            if (tarefa.concluida) {
+                li.classList.add("concluida");
+            }
+
+            li.innerHTML = `
+                <div>
+                    <strong>${tarefa.texto}</strong>
+                    <div class="info">${tarefa.data}</div>
+                </div>
+                <div>
+                    <button onclick="concluir(${index})">✔</button>
+                    <button onclick="remover(${index})">✖</button>
+                </div>
+            `;
+
+            lista.appendChild(li);
+        });
+    }
+
+    function adicionarTarefa() {
+        if (input.value.trim() === "") {
+            alert("Digite uma tarefa!");
+            return;
+        }
+
+        const novaTarefa = {
+            texto: input.value,
+            prioridade: select.value,
+            data: criarDataHora(),
+            concluida: false
+        };
+
+        tarefas.push(novaTarefa);
+        salvarLocalStorage();
+        renderizarTarefas();
+
+        input.value = "";
+    }
+
+    function concluir(index) {
+        tarefas[index].concluida = !tarefas[index].concluida;
+        salvarLocalStorage();
+        renderizarTarefas();
+    }
+
+    function remover(index) {
+        tarefas.splice(index, 1);
+        salvarLocalStorage();
+        renderizarTarefas();
+    }
+
+    botao.addEventListener("click", adicionarTarefa);
+
+    renderizarTarefas();
+</script>
+
+</body>
+</html>
